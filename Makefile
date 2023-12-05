@@ -20,7 +20,8 @@ HELP_FUN = \
 install:  ##@Install Install dependencies
 	poetry install
 
-run:  ##@Run Run project
+.PHONY: client
+client: 
 	poetry run python3 -m client
 
 .PHONY: server

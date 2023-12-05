@@ -1,5 +1,6 @@
 from PySide6 import QtCore
 from PySide6.QtWidgets import QCheckBox, QDoubleSpinBox, QLabel, QLayout, QPushButton, QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, QSpinBox, QComboBox, QDial
+import requests
 
 typeWidget = {
         int : QSpinBox,
@@ -75,65 +76,26 @@ class MainWindow(QWidget):
                 (WidgetNames.active, bool),
                 (WidgetNames.bmi, float),
         ]
-        widget_keeper = WidgetKeeper(widgets)
-        input_widget = InputWidget(widget_keeper.get_widgets())
+        self.widget_keeper = WidgetKeeper(widgets)
+        input_widget = InputWidget(self.widget_keeper.get_widgets())
         self.hbox.addWidget(input_widget)
         send_button = QPushButton("Send")
         send_button.clicked.connect(self.send)
         self.hbox.addWidget(send_button)
         self.vbox.addLayout(self.hbox, 3)
         
-        # self.left_vbox = QVBoxLayout()
-        # self.right_vbox = QVBoxLayout()
-        #
-        # self.tables_list = TablesList()
-        # self.entries_table = EntriesTable()
-        # self.entry_manager: EntryManager | None = None
-        #
-        # update_tables_button = QPushButton("update")
-        # update_tables_button.clicked.connect(self.update_tables_list)
-        #
-        # self.create_entry_button = QPushButton("create")
-        # self.create_entry_button.clicked.connect(self.create_entry_manager_for_create)
-        # self.create_entry_button.hide()
-        #
-        # self.left_vbox.addWidget(update_tables_button)
-        # self.left_vbox.addWidget(self.tables_list)
-        # self.right_vbox.addWidget(self.entries_table)
-        # self.right_vbox.addWidget(self.create_entry_button)
-        # self.hbox.addLayout(self.left_vbox, 1)
-        # self.hbox.addLayout(self.right_vbox, 3)
         self.main_layout.addLayout(self.vbox)
 
         self.setLayout(self.main_layout)
 
-        # self.tables_list.doubleClicked.connect(self.update_entries_table)
-        # self.entries_table.select_data_signal.connect(self.create_entry_manager_for_update)
-
-        # self.database = database.Database() 
+    def fetch_data(self):
+        res = dict()
+        for el in self.widget_keeper.get_widgets():
+            res[el[0]] = el[1].text
+        return res
 
     @QtCore.Slot()
     def send(self):
-        self.clear_layout(self.main_layout)
-        print("hello")
+        r = requests.post("127.0.0.1:6969", json=self.fetch_data())
+        print(r, r.json)
 
-    def clear_layout(self, layout):
-        for x in reversed(range(layout.count())):
-            widget = layout.takeAt(x).widget()
-            if widget is not None: 
-                widget.deleteLater()
-            else:
-                if layout.takeAt(x) is not None:
-                    self.clear_layout(layout.takeAt(x).layout())
-
-    def clear_all(self):
-        children = []
-        for i in range(self.main_layout.count()):
-            child = self.main_layout.itemAt(i).widget()
-            if child:
-                children.append(child)
-            child = self.main_layout.itemAt(i).layout()
-            if child:
-                children.append(child)
-        for child in children:
-            child.deleteLater()
