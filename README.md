@@ -5,13 +5,12 @@ pip install poetry
 make install
 ```
 
-## Установка переменных окружения
+## Запуск клиента
 ```bash
-make env
+make client
 ```
-Настроить файл `.env`.
 
-## Запуск
+## Запуск сервера
 ```bash
-make run
+make server
 ```
