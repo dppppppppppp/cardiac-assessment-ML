@@ -10,6 +10,8 @@ packages = [{include = "dppp"}]
 python = ">=3.10,<3.13"
 PySide6 = "^6.6.0"
 python-dotenv = "^1.0.0"
+Flask = ">=2.3.3"
+catboost = "^1.2.2"
 
 [build-system]
 requires = ["poetry-core"]

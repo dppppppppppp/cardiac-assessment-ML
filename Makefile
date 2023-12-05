@@ -23,6 +23,10 @@ install:  ##@Install Install dependencies
 run:  ##@Run Run project
 	poetry run python3 -m client
 
+.PHONY: server
+server: 
+	poetry run python3 -m server
+
 env:  ##@Environment Create .env file with variables
 	@$(eval SHELL:=/bin/bash)
 	@cp .env.sample .env
