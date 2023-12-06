@@ -1,0 +1,2 @@
+Flask==2.3.3
+catboost==1.2.2
