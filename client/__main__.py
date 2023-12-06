@@ -84,7 +84,7 @@ class HealthApp(QWidget):
         except ArgumentError:
             QMessageBox.warning(self, "Предупреждение", "Пожалуйста, заполните все поля.")
             return
-        ans = requests.post("http://127.0.0.1:6969", json=data).json()["prediction"]
+        ans = requests.post("http://31.31.202.46:6969", json=data).json()["prediction"]
         if ans:
             self.answer_text.setText("У пациента присутствуют сердечно-сосудистые заболевания.")
         else:
